@@ -1,3 +1,5 @@
+2017-03-07, v. 0.1
+
 # Optimized Closures in F# #
 
 While implementing a data structure that represents high-level contiguous arrays, we ran into some strange performance behavior. After digging around in the F# core libraries, we found the that reason for this are F#'s optimized closures, whose effect we explore in the following.
