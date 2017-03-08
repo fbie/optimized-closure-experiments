@@ -1,8 +1,8 @@
-2017-03-07, v. 0.1
+2017-03-09, v. 0.2
 
 # Optimized Closures in F# #
 
-While implementing a data structure that represents high-level contiguous arrays, we ran into some strange performance behavior. After digging around in the F# core libraries, we found the that reason for this are F#'s optimized closures, whose effect we explore in the following.
+While implementing a data structure that represents high-level contiguous arrays, we ran into some strange performance behavior. After digging around in the F# core libraries, we found that the reason for this is the use of F#'s optimized closures, whose effect we explore in the following.
 
 
 ## The Problem ##
@@ -14,7 +14,7 @@ The main difference was that the sequential variant would first initialize the e
 
 ## Optimized Closures ##
 
-When digging into the code for `Array2D.init`, the only difference one can find is that the initialization function `f` is "adapted" by calling `OptimizedClosures.FSharFunc<_,_,_>.Adapt f` [before entering the loop](https://github.com/fsharp/fsharp/blob/master/src/fsharp/FSharp.Core/array2.fs#L71). The [documentation](https://msdn.microsoft.com/en-us/visualfsharpdocs/conceptual/optimizedclosures.fsharpfunc%5B't1,'t2,'u%5D-class-%5Bfsharp%5D) simply says:
+When digging into the code for `Array2D.init`, the only difference one can find is that the initialization function `f` is "adapted" by calling `OptimizedClosures.FSharFunc<_,_,_>.Adapt f` [before entering the loop](https://github.com/fsharp/fsharp/blob/master/src/fsharp/FSharp.Core/array2.fs#L71). The [documentation for optimized closures](https://msdn.microsoft.com/en-us/visualfsharpdocs/conceptual/optimizedclosures.fsharpfunc%5B't1,'t2,'u%5D-class-%5Bfsharp%5D) simply says:
 
 > The .NET Framework type used to represent F# function values that
 > accept two iterated (curried) arguments without intervening
@@ -125,3 +125,7 @@ sumOpt                   	  0.026524      0.000  0.000 ms/op  16384
 ## Conclusion ##
 
 When implementing data structures, make sure to give them a proper finish by using optimized closures under the hood. The performance benefit is obvious. Clearly, the code gets slightly more convoluted. This should not hinder library implementers from making extensive use of such improvements.
+
+## Further Resources ##
+
+[Jomo Fisher, 2008. "F# Performance Tweaking".](https://blogs.msdn.microsoft.com/jomo_fisher/2008/09/16/f-performance-tweaking/)
