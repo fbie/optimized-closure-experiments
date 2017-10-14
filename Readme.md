@@ -1,4 +1,4 @@
-2017-03-09, v. 0.2
+2017-10-14, v. 0.2
 
 # Optimized Closures in F# #
 
@@ -14,7 +14,7 @@ The main difference was that the sequential variant would first initialize the e
 
 ## Optimized Closures ##
 
-When digging into the code for `Array2D.init`, the only difference one can find is that the initialization function `f` is "adapted" by calling `OptimizedClosures.FSharFunc<_,_,_>.Adapt f` [before entering the loop](https://github.com/fsharp/fsharp/blob/master/src/fsharp/FSharp.Core/array2.fs#L71). The [documentation for optimized closures](https://msdn.microsoft.com/en-us/visualfsharpdocs/conceptual/optimizedclosures.fsharpfunc%5B't1,'t2,'u%5D-class-%5Bfsharp%5D) simply says:
+When digging into the code for `Array2D.init`, the only difference one can find is that the initialization function `f` is "adapted" by calling `OptimizedClosures.FSharFunc<_,_,_>.Adapt f` [before entering the loop](https://github.com/fsharp/fsharp/blob/master/src/fsharp/FSharp.Core/array2.fs#L76). The [documentation for optimized closures](https://msdn.microsoft.com/en-us/visualfsharpdocs/conceptual/optimizedclosures.fsharpfunc%5B't1,'t2,'u%5D-class-%5Bfsharp%5D) simply says:
 
 > The .NET Framework type used to represent F# function values that
 > accept two iterated (curried) arguments without intervening
@@ -27,7 +27,7 @@ Furthermore, it says about the `Adapt` function:
 > value that can accept two curried arguments without intervening
 > execution.
 
-It turns out that the `Adapt` function in the [F# core library](https://github.com/fsharp/fsharp/blob/master/src/fsharp/FSharp.Core/prim-types.fs#L3259) really only overrides the `Invoke` method on `FSharpFunc`.
+It turns out that the `Adapt` function in the [F# core library](https://github.com/fsharp/fsharp/blob/master/src/fsharp/FSharp.Core/prim-types.fs#L2806) really only overrides the `Invoke` method on `FSharpFunc`.
 
 ## Benchmarking ##
 
